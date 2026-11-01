@@ -63,11 +63,21 @@ def build_node_tree(mapping: dict[str, Node]) -> dict[str, Node]:
         node.children_nodes = []
         node.parent_node = None
 
-    # Build connections
+    # Preserve explicit children and their ordering, including legacy conflicts.
     for node in mapping.values():
         for child_id in node.children:
             if child_id in mapping:
                 child_node = mapping[child_id]
                 node.add_child(child_node)
+
+    # Some exports omit children entirely. Recover those edges from parent IDs,
+    # but never supplement an explicit list (even []) or override an existing
+    # connection. Keep serialized fields unchanged so rebuilding is idempotent.
+    for node in mapping.values():
+        if node.parent is None or node.parent_node is not None:
+            continue
+        parent = mapping.get(node.parent)
+        if parent is not None and "children" not in parent.model_fields_set:
+            parent.add_child(node)
 
     return mapping
