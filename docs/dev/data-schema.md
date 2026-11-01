@@ -3,6 +3,11 @@
 ## ChatGPT Exports
 - **Structure**: A **DAG** (Tree), not a list.
 - **Navigation**: `mapping` contains nodes; `current_node` points to the active leaf.
+- **Omitted children**: When a node omits `children`, runtime links are recovered
+  from other nodes' `parent` IDs within the same conversation. Explicit child
+  lists (including empty lists) and existing explicit connections take precedence.
+  Missing parent references remain disconnected; no branch is guessed. Export
+  fields are left unchanged, and active rendering still follows `current_node`.
 - **Polymorphism**: `content.parts` is polymorphic (strings mixed with dicts).
 - **Top-level**: Can be a list OR `{ conversations: [...] }`.
 - **Content Types**: `text`, `multimodal_text`, `code`, `execution_output`, `tether_browsing_display`, `tether_quote`, `reasoning_recap`, `thoughts` (all supported).

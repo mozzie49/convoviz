@@ -82,6 +82,8 @@ Message extraction:
 
 Conversation traversal:
     └── active-branch traversal is cycle-safe (guards malformed parent graphs)
+    └── omitted children are recovered from same-conversation parent IDs
+        (explicit lists/connections take precedence; export fields stay unchanged)
 
 Archive extraction:
     └── ZIP extraction rejects traversal paths and symlink members

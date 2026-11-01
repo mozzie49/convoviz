@@ -342,3 +342,13 @@
 - **Safer output cleanup**: Output cleanup now avoids following symlinks for managed directories/files.
 - **Collection merge correctness**: Fixed `ConversationCollection.update()` so it won’t skip “new but older-timestamped” conversations (common with bookmarklet data). Added tests.
 - **YAML frontmatter correctness**: YAML frontmatter is now emitted as real YAML (quoted strings, lists/dicts, ISO datetimes) and supports `tags` when enabled.
+
+## 2026-10-31 — Recover omitted conversation child links (#70)
+
+- Recover runtime child/parent connections from parent IDs when the parent node
+  omits `children`; preserve explicit child lists, their order, and existing
+  connections. Missing references stay disconnected and existing cycle guards
+  remain in effect. Active rendering still follows the selected `current_node`.
+- Add synthetic regressions for parent-only/mixed exports, selected branches,
+  sibling preservation, explicit empty/conflicting links, missing references,
+  repeated builds, and cycles. No real user export archive was available.
